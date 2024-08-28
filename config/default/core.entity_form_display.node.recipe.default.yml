@@ -3,12 +3,15 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.recipe.field_automator_allbookscrapped
+    - field.field.node.recipe.field_automator_specific_recipe
     - field.field.node.recipe.field_cooking_time
     - field.field.node.recipe.field_difficulty
     - field.field.node.recipe.field_ingredients
     - field.field.node.recipe.field_media_image
     - field.field.node.recipe.field_number_of_servings
     - field.field.node.recipe.field_preparation_time
+    - field.field.node.recipe.field_recipe_book_upload
     - field.field.node.recipe.field_recipe_category
     - field.field.node.recipe.field_recipe_instruction
     - field.field.node.recipe.field_summary
@@ -18,9 +21,90 @@ dependencies:
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - field_group
+    - file
     - media_library
     - path
     - text
+third_party_settings:
+  field_group:
+    group_tabs:
+      children:
+        - group_required
+        - group_manual
+        - group_automator
+      label: Tabs
+      region: content
+      parent_name: ''
+      weight: 1
+      format_type: tabs
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        direction: horizontal
+        width_breakpoint: 640
+    group_automator:
+      children:
+        - field_automator_specific_recipe
+        - field_automator_allbookscrapped
+      label: Automator
+      region: content
+      parent_name: group_tabs
+      weight: 22
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_manual:
+      children:
+        - langcode
+        - field_preparation_time
+        - field_cooking_time
+        - field_number_of_servings
+        - field_difficulty
+        - field_recipe_category
+        - field_tags
+        - field_media_image
+        - field_summary
+        - field_ingredients
+        - field_recipe_instruction
+      label: Manual
+      region: content
+      parent_name: group_tabs
+      weight: 21
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_required:
+      children:
+        - title
+        - field_recipe_book_upload
+      label: Required
+      region: content
+      parent_name: group_tabs
+      weight: 20
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
+        required_fields: true
 _core:
   default_config_hash: WZPgNLXp5gpBryDcfhT15FsgmA5m-JG8DsSE-PbmoeM
 id: node.recipe.default
@@ -30,9 +114,25 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 15
+    weight: 4
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_automator_allbookscrapped:
+    type: string_textarea
+    weight: 29
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_automator_specific_recipe:
+    type: string_textarea
+    weight: 28
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
   field_cooking_time:
     type: number
@@ -49,7 +149,7 @@ content:
     third_party_settings: {  }
   field_ingredients:
     type: string_textfield
-    weight: 11
+    weight: 10
     region: content
     settings:
       size: 60
@@ -57,7 +157,7 @@ content:
     third_party_settings: {  }
   field_media_image:
     type: media_library_widget
-    weight: 9
+    weight: 8
     region: content
     settings:
       media_types: {  }
@@ -76,6 +176,13 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_recipe_book_upload:
+    type: file_generic
+    weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
   field_recipe_category:
     type: options_buttons
     weight: 6
@@ -84,7 +191,7 @@ content:
     third_party_settings: {  }
   field_recipe_instruction:
     type: text_textarea
-    weight: 13
+    weight: 11
     region: content
     settings:
       rows: 5
@@ -92,7 +199,7 @@ content:
     third_party_settings: {  }
   field_summary:
     type: text_textarea
-    weight: 10
+    weight: 9
     region: content
     settings:
       rows: 5
@@ -123,33 +230,33 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 20
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 18
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 16
+    weight: 5
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 19
+    weight: 8
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 17
+    weight: 6
     region: content
     settings:
       display_label: true
@@ -163,13 +270,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 12
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 14
+    weight: 3
     region: content
     settings:
       match_operator: CONTAINS
